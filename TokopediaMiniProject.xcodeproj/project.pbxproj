@@ -20,6 +20,8 @@
 		EB0F4E1B2AA6E84500C9B35B /* Cell3.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB0F4E1A2AA6E84500C9B35B /* Cell3.swift */; };
 		EB0F4E1D2AA7269F00C9B35B /* SaveViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB0F4E1C2AA7269F00C9B35B /* SaveViewController.swift */; };
 		EB0F4E1F2AA726C300C9B35B /* SaveViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB0F4E1E2AA726C300C9B35B /* SaveViewModel.swift */; };
+		EB784B922AA972B100B75ECC /* Cell4.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB784B912AA972B100B75ECC /* Cell4.swift */; };
+		EB784B942AA9735200B75ECC /* Cell4ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB784B932AA9735200B75ECC /* Cell4ViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -50,6 +52,8 @@
 		EB0F4E1A2AA6E84500C9B35B /* Cell3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cell3.swift; sourceTree = "<group>"; };
 		EB0F4E1C2AA7269F00C9B35B /* SaveViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveViewController.swift; sourceTree = "<group>"; };
 		EB0F4E1E2AA726C300C9B35B /* SaveViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveViewModel.swift; sourceTree = "<group>"; };
+		EB784B912AA972B100B75ECC /* Cell4.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cell4.swift; sourceTree = "<group>"; };
+		EB784B932AA9735200B75ECC /* Cell4ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cell4ViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,6 +108,8 @@
 				EB0F4E162AA6E54200C9B35B /* Cell1.swift */,
 				EB0F4E182AA6E80100C9B35B /* Cell2.swift */,
 				EB0F4E1A2AA6E84500C9B35B /* Cell3.swift */,
+				EB784B912AA972B100B75ECC /* Cell4.swift */,
+				EB784B932AA9735200B75ECC /* Cell4ViewModel.swift */,
 			);
 			path = TokopediaMiniProject;
 			sourceTree = "<group>";
@@ -225,6 +231,8 @@
 				EB0F4E132AA6D41300C9B35B /* Model.swift in Sources */,
 				813BAED62554E3220083B711 /* ViewController.swift in Sources */,
 				EB0F4E152AA6D5DE00C9B35B /* ViewModel.swift in Sources */,
+				EB784B922AA972B100B75ECC /* Cell4.swift in Sources */,
+				EB784B942AA9735200B75ECC /* Cell4ViewModel.swift in Sources */,
 				813BAED22554E3220083B711 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

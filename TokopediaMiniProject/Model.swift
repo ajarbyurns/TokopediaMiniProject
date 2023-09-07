@@ -28,7 +28,7 @@ struct Category {
     categoryLevel = level
     identifier = json["identifier"] as? String ?? ""
     url = json["url"] as? String ?? ""
-    iconImageUrl = json["iconImageUrl"] as? String ?? ""
+    iconImageUrl = json["icon_image_url"] as? String ?? ""
     iconImageUrlGray = json["iconImageUrlGray"] as? String ?? ""
     parentName = json["parentName"] as? String ?? ""
     appLinks = json["appLinks"] as? String ?? ""

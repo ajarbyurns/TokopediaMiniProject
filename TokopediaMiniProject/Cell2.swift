@@ -23,10 +23,14 @@ class Cell2: UITableViewCell {
   
   var filterText: String = ""{
     didSet{
-      let attributeText = NSMutableAttributedString(string: header.text ?? "")
-      let range: NSRange = attributeText.mutableString.range(of: filterText, options: .caseInsensitive)
-      attributeText.addAttribute(NSAttributedString.Key.font, value: UIFont.boldSystemFont(ofSize: header.font.pointSize), range: range)
-      header.attributedText = attributeText
+      if(filterText.isEmpty) {
+        header.text = title
+      } else {
+        let attributeText = NSMutableAttributedString(string: header.text ?? "")
+        let range: NSRange = attributeText.mutableString.range(of: filterText, options: .caseInsensitive)
+        attributeText.addAttribute(NSAttributedString.Key.font, value: UIFont.boldSystemFont(ofSize: header.font.pointSize), range: range)
+        header.attributedText = attributeText
+      }
     }
   }
   

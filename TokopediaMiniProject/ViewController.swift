@@ -96,7 +96,11 @@ class ViewController: UIViewController {
 extension ViewController: UITableViewDelegate, UITableViewDataSource {
   
   func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-    return 50.0
+    if(viewModel.items[indexPath.row].categoryLevel == 3){
+      return 150.0
+    } else {
+      return 50.0
+    }
   }
   
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -119,8 +123,9 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
         return cell
       case 3:
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell3") as? Cell3 ?? Cell3()
-        cell.title = item.name
         cell.filterText = viewModel.filterText
+        cell.children = item.child
+        cell.delegate = self
         return cell
       default:
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell1") as? Cell1 ?? Cell1()
@@ -134,17 +139,16 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
 }
 
 extension ViewController: ViewModelProtocol {
-  func updateData() {
-    tableView.reloadData()
+  func addRowsAt(_ indexPaths: [IndexPath]) {
+    tableView.insertRows(at: indexPaths, with: .none)
   }
   
-  func saveCategory(_ text: String) {
-    if let navController = self.navigationController, navController.viewControllers.count >= 2 {
-      if let viewController = navController.viewControllers[navController.viewControllers.count - 2] as? SaveViewController {
-        viewController.viewModel.saveData(text)
-        navController.popViewController(animated: false)
-      }
-    }
+  func removeRowsAt(_ indexPaths: [IndexPath]){
+    tableView.deleteRows(at: indexPaths, with: .none)
+  }
+  
+  func updateData() {
+    tableView.reloadData()
   }
 }
 
@@ -164,5 +168,16 @@ extension ViewController : UITextFieldDelegate {
       viewModel.filterText = text.replacingCharacters(in: textRange, with: string)
     }
     return true
+  }
+}
+
+extension ViewController: Cell3Delegate {
+  func saveCategory(_ text: String) {
+    if let navController = self.navigationController, navController.viewControllers.count >= 2 {
+      if let viewController = navController.viewControllers[navController.viewControllers.count - 2] as? SaveViewController {
+        viewController.viewModel.saveData(text)
+        navController.popViewController(animated: false)
+      }
+    }
   }
 }

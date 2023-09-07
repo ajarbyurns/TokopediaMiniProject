@@ -9,16 +9,12 @@ import Foundation
 
 protocol ViewModelProtocol: AnyObject {
   func updateData()
-  func saveCategory(_ text: String)
+  func addRowsAt(_ indexPaths: [IndexPath])
+  func removeRowsAt(_ indexPaths: [IndexPath])
 }
 
 class ViewModel {
-  
-  var items: [Category] = []{
-    didSet{
-      delegate?.updateData()
-    }
-  }
+  var items: [Category] = []
   private var tempItems: [Category] = []
   weak var delegate: ViewModelProtocol?
   var filterText: String = ""{
@@ -35,6 +31,7 @@ class ViewModel {
             let json = try JSONSerialization.jsonObject(with: data, options: []) as! [String : Any]
             tempItems = CategoryData(json).data?.categoryAllList?.categories ?? []
             items = tempItems
+            delegate?.updateData()
           } catch {
             print(error)
           }
@@ -71,6 +68,7 @@ class ViewModel {
           DispatchQueue.main.async {
             self.tempItems = categories.categories
             self.items = self.tempItems
+            self.delegate?.updateData()
           }
         } catch {
             DispatchQueue.main.async {
@@ -85,43 +83,76 @@ class ViewModel {
     if item.isExpanded {
       contract(at: index)
     } else {
-      expand(at: index)
-      if item.categoryLevel == 3 {
-        delegate?.saveCategory(item.name)
+      if item.categoryLevel != 3 {
+        expand(at: index)
       }
     }
   }
   
-  private func expand(at index: Int){
-    let item = items[index]
+  private func expand(at index: Int, _ update: Bool = true){
+    var item = items[index]
     let temp = item.child
     guard temp.count > 0, !item.isExpanded else {
       return
     }
+    if item.categoryLevel == 1 {
+      items.insert(contentsOf: temp, at: index+1)
+      var indexPaths : [IndexPath] = []
+      for i in 0..<temp.count {
+        let indexPath = IndexPath(row: index + 1 + i, section: 0)
+        indexPaths.append(indexPath)
+      }
+      if update {
+        delegate?.addRowsAt(indexPaths)
+      }
+    } else if item.categoryLevel == 2 {
+      item.categoryLevel = 3
+      items.insert(item, at: index+1)
+      let indexPath = IndexPath(row: index + 1, section: 0)
+      if update {
+        delegate?.addRowsAt([indexPath])
+      }
+    }
     items[index].isExpanded = true
-    items.insert(contentsOf: temp, at: index+1)
   }
   
-  private func contract(at index: Int){
+  private func contract(at index: Int, _ update: Bool = true){
     let item = items[index]
     let temp = item.child
     guard temp.count > 0, item.isExpanded else {
       return
     }
-    for i in (1...temp.count).reversed() {
-      if items[index+i].isExpanded {
-        contract(at: index + i)
+    if item.categoryLevel == 1 {
+      for i in (1...temp.count).reversed() {
+        if items[index+i].isExpanded {
+          contract(at: index + i)
+        }
+      }
+      let begin = index + 1
+      let end = begin + temp.count - 1
+      items.removeSubrange(begin...end)
+      var indexPaths : [IndexPath] = []
+      for i in 0..<temp.count {
+        let indexPath = IndexPath(row: index + 1 + i, section: 0)
+        indexPaths.append(indexPath)
+      }
+      if update {
+        delegate?.removeRowsAt(indexPaths)
+      }
+    } else if item.categoryLevel == 2 {
+      items.remove(at: index+1)
+      let indexPath = IndexPath(row: index + 1, section: 0)
+      if update {
+        delegate?.removeRowsAt([indexPath])
       }
     }
     items[index].isExpanded = false
-    let begin = index + 1
-    let end = begin + temp.count - 1
-    items.removeSubrange(begin...end)
   }
   
   private func filter(_ text: String){
     if text.isEmpty {
       items = tempItems
+      delegate?.updateData()
       return
     }
     
@@ -137,12 +168,14 @@ class ViewModel {
     items = temp
     
     for i in (0..<items.count).reversed() {
-      expand(at: i)
+      expand(at: i, false)
       let start = i+1
       let end = start + items[i].child.count
       for j in (start..<end).reversed() {
-        expand(at: j)
+        expand(at: j, false)
       }
     }
+    
+    delegate?.updateData()
   }
 }
